@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificado AWS Cloud Club</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset e configuração da página */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #05050a; /* Fundo exterior muito escuro */
+            overflow: hidden;
+        }
+
+        /* Fundo estilo Galáxia (Nebulosa) no EXTERIOR (body) */
+        body {
+            background-image: 
+                radial-gradient(circle at 15% 40%, rgba(109, 40, 217, 0.7), transparent 45%),
+                radial-gradient(circle at 85% 20%, rgba(30, 58, 138, 0.7), transparent 45%),
+                radial-gradient(circle at 50% 80%, rgba(192, 38, 211, 0.4), transparent 50%);
+        }
+
+        /* Estrelas do fundo galáctico */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, #e0e7ff, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 160px 120px, #c7d2fe, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 200px 200px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 300px 100px, #c7d2fe, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 350px 250px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 500px 150px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 600px 350px, #e0e7ff, rgba(0,0,0,0));
+            background-size: 600px 600px;
+            opacity: 0.9;
+            animation: starsMove 150s linear infinite;
+        }
+
+        @keyframes starsMove {
+            from { background-position: 0 0; }
+            to { background-position: -600px -600px; }
+        }
+
+        /* Container Principal do Certificado */
+        .cert-container {
+            width: 1050px;
+            height: 720px;
+            /* Fundo branco com mais transparência para ver a galáxia */
+            background-color: rgba(255, 255, 255, 0.65); 
+            backdrop-filter: blur(8px); /* Esfuma a galáxia no fundo */
+            -webkit-backdrop-filter: blur(8px);
+            border: 8px solid #1a1a1a; /* Borda preta como na imagem */
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+            padding: 60px;
+            box-sizing: border-box;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Fita Decorativa (Ribbon) */
+        .ribbon-wrapper {
+            position: absolute;
+            top: 0;
+            right: 120px; /* Posição à direita */
+            display: flex;
+            height: 350px;
+            width: 100px;
+            border-left: 2px solid #1a1a1a;
+            border-right: 2px solid #1a1a1a;
+            border-bottom: 2px solid #1a1a1a;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            z-index: 1;
+        }
+
+        .stripe {
+            height: 100%;
+        }
+
+        .stripe.purple { 
+            flex: 1;
+            /* Degradê nas listras roxas */
+            background: linear-gradient(180deg, #3b0764 0%, #9333ea 50%, #3b0764 100%);
+        }
+
+        .stripe.blue { 
+            flex: 1.2;
+            /* Degradê na listra azul */
+            background: linear-gradient(180deg, #1e3a8a 0%, #3b82f6 50%, #1e3a8a 100%);
+            border-left: 2px solid #1a1a1a; 
+            border-right: 2px solid #1a1a1a; 
+        }
+
+        /* Logo do Mascote (Sobrepondo a fita) */
+        .cert-logo {
+            position: absolute;
+            top: 140px;
+            right: 45px; /* Centralizado perfeitamente sobre a fita que está a 120px */
+            width: 250px;
+            height: 250px;
+            z-index: 2; /* Fica por cima da fita (z-index 1) */
+            object-fit: contain;
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.4));
+        }
+
+        /* Bloco de Assinatura (Alinhado à direita debaixo da logo) */
+        .signature-block {
+            position: absolute;
+            bottom: 60px;
+            right: 40px;
+            width: 260px; /* Mesma zona centralizada da logo e ribbon */
+            text-align: center;
+            z-index: 3;
+        }
+
+        /* Nova classe para a imagem da assinatura */
+        .sig-image {
+            max-width: 220px;
+            max-height: 70px;
+            object-fit: contain;
+            margin-bottom: 5px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .sig-line {
+            width: 100%;
+            height: 3px;
+            background-color: #1a1a1a; /* Linha preta */
+            margin-bottom: 12px;
+            border: none;
+        }
+
+        .sig-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin: 0 0 5px 0;
+        }
+
+        .sig-role {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333333;
+            margin: 0;
+        }
+
+        /* Conteúdo do lado esquerdo (Textos) */
+        .content-left {
+            width: 66%; /* Reduzido de 80% para 66% para não sobrepor a assinatura e o mascote na direita */
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 3;
+            padding: 10px 0;
+        }
+
+        .cert-title {
+            font-family: 'Cinzel', serif;
+            font-size: 75px;
+            font-weight: 900;
+            margin: 0;
+            color: #000000; /* Texto Preto */
+            letter-spacing: 2px;
+            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.9); /* Brilho leve para destacar do fundo transparente */
+        }
+
+        .text-block {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-top: -15px;
+        }
+
+        .label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a1a; /* Texto Preto */
+            margin-bottom: 25px;
+        }
+
+        .name {
+            font-family: 'Playfair Display', serif;
+            font-size: 40px;
+            font-weight: bold;
+            color: #000000; /* Texto Preto */
+            margin: 0 0 30px 0;
+            letter-spacing: 1px;
+            text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.8);
+            text-align: center;
+        }
+
+        .body-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            text-align: justify;
+            text-align-last: center;
+            color: #1a1a1a; /* Texto Preto */
+            font-weight: 600;
+            max-width: 100%; /* Aproveita todo o espaço dos 66% */
+            margin: 0;
+            text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
+        }
+
+        .body-text strong {
+            color: #000000;
+            font-weight: 800;
+        }
+
+        .date {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a1a; /* Texto Preto */
+            text-align: center;
+            margin: 0;
+            margin-bottom: 10px; /* Margem normalizada, já não colide com as logos */
+            text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cert-container">
+        <!-- Fita Decorativa (Ribbon) com Degradê -->
+        <div class="ribbon-wrapper">
+            <div class="stripe purple"></div>
+            <div class="stripe blue"></div>
+            <div class="stripe purple"></div>
+        </div>
+
+        <!-- Logo do Mascote (Centralizada sobre a fita) -->
+        <img src="imagens/logo-mascote.png" alt="Logo Mascote" class="cert-logo">
+
+        <!-- Área de Assinatura -->
+        <div class="signature-block">
+            <!-- Substitua o link do src pela imagem da sua assinatura com fundo transparente (.png) -->
+            <img src="imagens/assinatura-henrique.png" alt="Assinatura" class="sig-image">
+            <hr class="sig-line">
+            <p class="sig-name">Henrique Zimermann</p>
+            <p class="sig-role">AWS Cloud Club Captain</p>
+        </div>
+
+        <!-- Área de Conteúdo da Esquerda (Textos) -->
+        <div class="content-left">
+            <h1 class="cert-title">CERTIFICADO</h1>
+
+            <div class="text-block">
+                <p class="label">Certificamos que:</p>
+                <!-- VARIÁVEL DE NOME AQUI -->
+                <h2 class="name">{{ NOME_PARTICIPANTE }}</h2>
+                <p class="body-text">
+                    Participou com êxito do evento de lançamento <strong>1º Meetup AWS Cloud Club Univali: O Ecossistema AWS: Operação Diária e Estratégia de Arquitetura</strong>. O encontro proporcionou uma imersão na prática do dia a dia com a visão estratégica de arquitetura na nuvem, contemplando as palestras <em>"Como eu utilizo AWS no meu dia a dia como Analista de Dados"</em> (por Diego Silva) e <em>"Decisões Arquiteturais: Projetando Soluções de Alto Valor na AWS"</em> (por Regis Dias).
+                </p>
+            </div>
+
+            <!-- VARIÁVEL DE DATA AQUI -->
+            <p class="date">Itajaí - SC, {{ DATA_EVENTO }}</p>
+        </div>
+    </div>
+
+</body>
+</html>
