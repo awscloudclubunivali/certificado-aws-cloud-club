@@ -1,0 +1,13 @@
+{
+  "name": "certificado-cloud-club",
+  "version": "1.0.0",
+  "description": "Gerador de certificados em PDF para o AWS Cloud Club",
+  "scripts": {
+    "generate": "node scripts/generate-certificates.js"
+  },
+  "dependencies": {
+    "csv-parser": "^3.0.0",
+    "nodemailer": "^6.9.14",
+    "puppeteer": "^22.0.0"
+  }
+}

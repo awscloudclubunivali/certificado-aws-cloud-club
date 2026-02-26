@@ -1,0 +1,82 @@
+name: Gerar e Enviar Certificados
+
+on:
+  # Disparo manual: pode enviar ou apenas gerar os PDFs
+  workflow_dispatch:
+    inputs:
+      enviar_emails:
+        description: "Enviar os certificados por email para os participantes?"
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+
+  # Disparo automático ao fazer push do participantes.csv na branch main
+  push:
+    branches:
+      - main
+    paths:
+      - "participantes.csv"
+
+jobs:
+  gerar-certificados:
+    name: Gerar PDFs e Enviar Emails
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Instalar dependências do sistema para o Puppeteer (Chromium)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libnss3 \
+            libatk-bridge2.0-0 \
+            libcups2 \
+            libxcomposite1 \
+            libxdamage1 \
+            libxfixes3 \
+            libxrandr2 \
+            libgbm1 \
+            libpango-1.0-0 \
+            libcairo2 \
+            libasound2t64 \
+            libxshmfence1 \
+            libdrm2
+
+      - name: Instalar dependências Node.js
+        run: npm install
+
+      - name: Gerar certificados em PDF
+        env:
+          # Variáveis SMTP lidas dos GitHub Secrets (somente necessárias se enviar_emails=true)
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SMTP_FROM: ${{ secrets.SMTP_FROM }}
+          # Controle de envio de emails - usa o input do workflow ou false ao disparar por push
+          ENVIAR_EMAILS: ${{ github.event.inputs.enviar_emails || 'false' }}
+        run: |
+          if [ "$ENVIAR_EMAILS" = "false" ]; then
+            # Limpa as variáveis SMTP para que o script pule o envio de email
+            unset SMTP_HOST SMTP_USER SMTP_PASS
+          fi
+          node scripts/generate-certificates.js
+
+      - name: Fazer upload dos certificados como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: certificados-pdf
+          path: certificados-gerados/
+          retention-days: 30
+          if-no-files-found: error
