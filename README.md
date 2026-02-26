@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/logo-mascote.png" width="120" alt="AWS Cloud Club Mascote"/>
-
 # Gerador de Certificados — AWS Cloud Club Univali
 
 Geração automática de certificados em PDF a partir de um CSV e envio por email via **GitHub Actions**.
@@ -135,7 +133,5 @@ O `index.html` usa as seguintes variáveis substituídas automaticamente pelo sc
 ---
 
 <div align="center">
-
-Feito com ☁️ pelo **AWS Cloud Club Univali**
 
 </div>
