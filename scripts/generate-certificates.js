@@ -107,6 +107,8 @@ async function main() {
   const participantes = await lerParticipantes();
   console.log(`Encontrados ${participantes.length} participante(s) no CSV.\n`);
 
+  const errosEmail = [];
+
   for (const participante of participantes) {
     const nome = participante["NOME_PARTICIPANTE"]?.trim();
     const data = participante["DATA_EVENTO"]?.trim();
@@ -127,13 +129,26 @@ async function main() {
 
     if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
       console.log(`  Enviando email para: ${email}`);
-      await enviarEmail(email, nome, pdfPath);
-      console.log(`  Email enviado com sucesso.`);
+      try {
+        await enviarEmail(email, nome, pdfPath);
+        console.log(`  Email enviado com sucesso.`);
+      } catch (err) {
+        console.error(`  FALHA ao enviar email para ${email}: ${err.message}`);
+        errosEmail.push({ nome, email, erro: err.message });
+      }
     } else {
       console.log(`  Envio de email ignorado: variáveis SMTP não configuradas.`);
     }
 
     console.log("");
+  }
+
+  if (errosEmail.length > 0) {
+    console.error(`\n${errosEmail.length} email(s) não foram enviados:`);
+    for (const { nome, email, erro } of errosEmail) {
+      console.error(`  - ${nome} <${email}>: ${erro}`);
+    }
+    process.exit(1);
   }
 
   console.log("Processo concluído!");
