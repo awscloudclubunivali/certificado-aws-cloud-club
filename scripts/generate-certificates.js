@@ -28,6 +28,10 @@ async function gerarPDF(htmlContent, outputPath) {
   try {
     const page = await browser.newPage();
 
+    // Define o viewport igual ao tamanho do PDF para que vh/vw e
+    // cálculos de layout usem as dimensões corretas durante a renderização
+    await page.setViewport({ width: 1170, height: 840, deviceScaleFactor: 1 });
+
     await page.setContent(htmlContent, {
       waitUntil: "networkidle0",
     });
