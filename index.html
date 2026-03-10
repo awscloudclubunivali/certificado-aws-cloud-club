@@ -23,11 +23,28 @@
         padding: 0;
         width: 297mm;
         height: 210mm;
-        background-color: #05050a; /* Fundo escuro galáctico */
+        background-color: #05050a; /* Fundo galáctico */
         display: flex;
         align-items: center;
         justify-content: center;
-        overflow: hidden;
+        overflow: hidden; /* Impede scrollbars de forçarem o corte */
+      }
+
+      .cert-container {
+        /* Zona de Segurança: 280mm x 190mm deixa margem de sobra para sombras e bordas */
+        width: 280mm;
+        height: 190mm;
+        background-color: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 8px solid #1a1a1a;
+        border-radius: 20px;
+        position: relative;
+        box-sizing: border-box;
+        padding: 45px;
+        display: flex;
+        /* Sombras externas leves para não "estourar" o PDF */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
       }
 
       /* Fundo estilo Galáxia (Nebulosa) no EXTERIOR (body) */
@@ -81,24 +98,6 @@
         to {
           background-position: -600px -600px;
         }
-      }
-
-      /* Container Principal do Certificado */
-      .cert-container {
-        /* Usando medidas fixas menores que o A4 (297x210) para evitar cortes */
-        width: 280mm;
-        height: 195mm;
-        background-color: rgba(255, 255, 255, 0.65);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border: 8px solid #1a1a1a;
-        border-radius: 20px;
-        position: relative;
-        box-sizing: border-box;
-        padding: 50px;
-        display: flex;
-        /* Remove sombras externas muito grandes que podem causar estouro de margem */
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
       }
 
       /* Fita Decorativa (Ribbon) */
