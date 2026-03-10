@@ -13,13 +13,6 @@ on:
           - "true"
           - "false"
 
-  # Disparo automático ao fazer push do participantes.csv na branch main
-  push:
-    branches:
-      - main
-    paths:
-      - "participantes.csv"
-
 jobs:
   gerar-certificados:
     name: Gerar PDFs e Enviar Emails
