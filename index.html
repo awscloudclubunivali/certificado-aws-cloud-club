@@ -21,30 +21,29 @@
       html {
         margin: 0;
         padding: 0;
-        width: 297mm;
-        height: 210mm;
-        background-color: #05050a; /* Fundo galáctico */
+        width: 297mm; /* Largura exata do A4 */
+        height: 210mm; /* Altura exata do A4 */
+        background-color: #05050a;
         display: flex;
         align-items: center;
         justify-content: center;
-        overflow: hidden; /* Impede scrollbars de forçarem o corte */
+        overflow: hidden;
       }
 
       .cert-container {
-        /* Zona de Segurança: 280mm x 190mm deixa margem de sobra para sombras e bordas */
-        width: 280mm;
-        height: 190mm;
+        /* Deixamos 5mm de cada lado como margem de segurança física */
+        width: 287mm;
+        height: 200mm;
         background-color: rgba(255, 255, 255, 0.65);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
-        border: 8px solid #1a1a1a;
-        border-radius: 20px;
+        border: 3mm solid #1a1a1a; /* Borda em mm para precisão */
+        border-radius: 10mm;
         position: relative;
         box-sizing: border-box;
-        padding: 45px;
+        padding: 15mm;
         display: flex;
-        /* Sombras externas leves para não "estourar" o PDF */
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        box-shadow: none; /* Sombras externas causam corte em PDFs; evite-as aqui */
       }
 
       /* Fundo estilo Galáxia (Nebulosa) no EXTERIOR (body) */
@@ -104,10 +103,10 @@
       .ribbon-wrapper {
         position: absolute;
         top: 0;
-        right: 120px; /* Posição à direita */
+        right: 25mm;
         display: flex;
-        height: 350px;
-        width: 100px;
+        height: 100mm;
+        width: 25mm;
         border-left: 2px solid #1a1a1a;
         border-right: 2px solid #1a1a1a;
         border-bottom: 2px solid #1a1a1a;
@@ -146,11 +145,11 @@
       /* Logo do Mascote (Sobrepondo a fita) */
       .cert-logo {
         position: absolute;
-        top: 140px;
-        right: 45px; /* Centralizado perfeitamente sobre a fita que está a 120px */
-        width: 250px;
-        height: 250px;
-        z-index: 2; /* Fica por cima da fita (z-index 1) */
+        top: 53mm;
+        right: 10mm;
+        width: 55mm;
+        height: 55mm;
+        z-index: 2;
         object-fit: contain;
         filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.4));
       }
@@ -158,9 +157,9 @@
       /* Bloco de Assinatura (Alinhado à direita debaixo da logo) */
       .signature-block {
         position: absolute;
-        bottom: 60px;
-        right: 40px;
-        width: 260px; /* Mesma zona centralizada da logo e ribbon */
+        bottom: 15mm;
+        right: 10mm;
+        width: 60mm;
         text-align: center;
         z-index: 3;
       }
