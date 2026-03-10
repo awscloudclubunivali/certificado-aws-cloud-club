@@ -22,15 +22,14 @@ const transporter = nodemailer.createTransport({
 
 async function gerarPDF(htmlContent, outputPath) {
   const browser = await puppeteer.launch({
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-web-security"],
   });
 
   try {
     const page = await browser.newPage();
 
-    // Define o viewport igual ao tamanho do PDF para que vh/vw e
-    // cálculos de layout usem as dimensões corretas durante a renderização
-    await page.setViewport({ width: 1170, height: 840, deviceScaleFactor: 1 });
+    // Use dimensões em mm aqui também para casar com o CSS
+    await page.setViewport({ width: 1123, height: 794, deviceScaleFactor: 1 });
 
     await page.setContent(htmlContent, {
       waitUntil: "networkidle0",
@@ -38,10 +37,12 @@ async function gerarPDF(htmlContent, outputPath) {
 
     await page.pdf({
       path: outputPath,
-      width: "1170px",  // 1050px de conteúdo + 2x 60px padding
-      height: "840px",  // 720px de conteúdo + 2x 60px padding
+      format: 'A4',
+      landscape: true,
       printBackground: true,
+      displayHeaderFooter: false,
       margin: { top: "0", right: "0", bottom: "0", left: "0" },
+      preferCSSPageSize: true, // ESSENCIAL: Faz o Puppeteer respeitar o @page do CSS
     });
   } finally {
     await browser.close();
