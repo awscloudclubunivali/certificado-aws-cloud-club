@@ -22,17 +22,13 @@ const transporter = nodemailer.createTransport({
 
 async function gerarPDF(htmlContent, outputPath) {
   const browser = await puppeteer.launch({
-    args: [
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--disable-web-security",
-    ],
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
 
   try {
     const page = await browser.newPage();
 
-    // Use dimensões em mm aqui também para casar com o CSS
+    // Viewport exato para A4 em 96 DPI
     await page.setViewport({ width: 1123, height: 794, deviceScaleFactor: 1 });
 
     await page.setContent(htmlContent, {
@@ -44,16 +40,8 @@ async function gerarPDF(htmlContent, outputPath) {
       format: "A4",
       landscape: true,
       printBackground: true,
-      preferCSSPageSize: true, // Força o uso do @page size: A4 landscape
-      displayHeaderFooter: false,
-      margin: {
-        top: "0mm",
-        right: "0mm",
-        bottom: "0mm",
-        left: "0mm",
-      },
-      // Se ainda cortar, adicione esta linha para reduzir a escala levemente:
-      // scale: 0.98
+      preferCSSPageSize: true, // Crucial para respeitar o @page do seu HTML
+      margin: { top: "0", right: "0", bottom: "0", left: "0" },
     });
   } finally {
     await browser.close();
