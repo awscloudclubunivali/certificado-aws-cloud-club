@@ -22,7 +22,11 @@ const transporter = nodemailer.createTransport({
 
 async function gerarPDF(htmlContent, outputPath) {
   const browser = await puppeteer.launch({
-    args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-web-security"],
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-web-security",
+    ],
   });
 
   try {
@@ -37,12 +41,19 @@ async function gerarPDF(htmlContent, outputPath) {
 
     await page.pdf({
       path: outputPath,
-      format: 'A4',
+      format: "A4",
       landscape: true,
       printBackground: true,
+      preferCSSPageSize: true, // Força o uso do @page size: A4 landscape
       displayHeaderFooter: false,
-      margin: { top: "0", right: "0", bottom: "0", left: "0" },
-      preferCSSPageSize: true, // ESSENCIAL: Faz o Puppeteer respeitar o @page do CSS
+      margin: {
+        top: "0mm",
+        right: "0mm",
+        bottom: "0mm",
+        left: "0mm",
+      },
+      // Se ainda cortar, adicione esta linha para reduzir a escala levemente:
+      // scale: 0.98
     });
   } finally {
     await browser.close();
@@ -124,7 +135,9 @@ async function main() {
       continue;
     }
 
-    const nomeArquivo = nome.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9_\-]/g, "");
+    const nomeArquivo = nome
+      .replace(/\s+/g, "_")
+      .replace(/[^a-zA-Z0-9_\-]/g, "");
     const pdfPath = path.join(OUTPUT_DIR, `Certificado_${nomeArquivo}.pdf`);
 
     console.log(`Gerando certificado para: ${nome}`);
@@ -132,7 +145,11 @@ async function main() {
     await gerarPDF(htmlContent, pdfPath);
     console.log(`  PDF gerado: ${pdfPath}`);
 
-    if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+    if (
+      process.env.SMTP_HOST &&
+      process.env.SMTP_USER &&
+      process.env.SMTP_PASS
+    ) {
       console.log(`  Enviando email para: ${email}`);
       try {
         await enviarEmail(email, nome, pdfPath);
@@ -142,7 +159,9 @@ async function main() {
         errosEmail.push({ nome, email, erro: err.message });
       }
     } else {
-      console.log(`  Envio de email ignorado: variáveis SMTP não configuradas.`);
+      console.log(
+        `  Envio de email ignorado: variáveis SMTP não configuradas.`,
+      );
     }
 
     console.log("");
