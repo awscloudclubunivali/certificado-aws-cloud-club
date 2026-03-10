@@ -17,13 +17,18 @@
         margin: 0;
       }
 
+      * {
+        box-sizing: border-box;
+        -webkit-print-color-adjust: exact;
+      }
+
       body,
       html {
         margin: 0;
         padding: 0;
-        width: 297mm; /* Largura exata do A4 */
-        height: 210mm; /* Altura exata do A4 */
-        background-color: #05050a;
+        width: 297mm; /* Largura A4 exata */
+        height: 210mm; /* Altura A4 exata */
+        background-color: #05050a; /* Fundo galáctico */
         display: flex;
         align-items: center;
         justify-content: center;
@@ -31,19 +36,17 @@
       }
 
       .cert-container {
-        /* Deixamos 5mm de cada lado como margem de segurança física */
+        /* Zona de Segurança: 287mm x 200mm (margem de 5mm total) */
         width: 287mm;
         height: 200mm;
         background-color: rgba(255, 255, 255, 0.65);
         backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border: 3mm solid #1a1a1a; /* Borda em mm para precisão */
+        border: 3mm solid #1a1a1a; /* Borda definida em mm */
         border-radius: 10mm;
         position: relative;
-        box-sizing: border-box;
         padding: 15mm;
         display: flex;
-        box-shadow: none; /* Sombras externas causam corte em PDFs; evite-as aqui */
+        /* Remova box-shadow externo se possível, ele é o maior causador de cortes em PDF */
       }
 
       /* Fundo estilo Galáxia (Nebulosa) no EXTERIOR (body) */

@@ -28,18 +28,19 @@ async function gerarPDF(htmlContent, outputPath) {
   try {
     const page = await browser.newPage();
 
-    // Viewport apenas para renderização interna, não define o tamanho do papel
+    // Viewport de alta densidade para nitidez máxima
     await page.setViewport({ width: 1123, height: 794, deviceScaleFactor: 2 });
 
     await page.setContent(htmlContent, { waitUntil: "networkidle0" });
 
     await page.pdf({
       path: outputPath,
-      format: "A4",
+      format: 'A4',
       landscape: true,
       printBackground: true,
-      preferCSSPageSize: true, // Força o Puppeteer a obedecer os 297x210mm do CSS
-      margin: { top: "0", right: "0", bottom: "0", left: "0" },
+      preferCSSPageSize: true, // Força o uso do @page size: A4 do CSS
+      margin: { top: '0mm', right: '0mm', bottom: '0mm', left: '0mm' },
+      scale: 0.98 // Reduz 2% do tamanho para garantir que nada seja cortado
     });
   } finally {
     await browser.close();
