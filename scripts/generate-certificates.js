@@ -28,6 +28,8 @@ async function gerarPDF(htmlContent, outputPath) {
   try {
     const page = await browser.newPage();
 
+    await page.setViewport({ width: 1170, height: 840, deviceScaleFactor: 1 });
+
     await page.setContent(htmlContent, {
       waitUntil: "networkidle0",
     });
