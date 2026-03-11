@@ -28,18 +28,21 @@ async function gerarPDF(htmlContent, outputPath) {
   try {
     const page = await browser.newPage();
 
-    // Viewport apenas para renderização interna (1123x794 é a proporção A4)
+    // Viewport simulando A4 em 96 DPI
     await page.setViewport({ width: 1123, height: 794, deviceScaleFactor: 2 });
 
     await page.setContent(htmlContent, { waitUntil: "networkidle0" });
 
     await page.pdf({
       path: outputPath,
-      format: "A4", // Força o papel A4
-      landscape: true, // Modo paisagem
+      format: "A4",
+      landscape: true,
       printBackground: true,
-      preferCSSPageSize: true, // ESSENCIAL: Faz o PDF seguir o @page do seu CSS
+      preferCSSPageSize: true,
       margin: { top: "0", right: "0", bottom: "0", left: "0" },
+      /* A "MÁGICA": 0.9 reduz o conteúdo em 10%, garantindo que a borda preta
+         e os textos de Itajaí apareçam perfeitamente centralizados. */
+      scale: 0.9,
     });
   } finally {
     await browser.close();

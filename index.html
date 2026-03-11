@@ -11,44 +11,43 @@
       rel="stylesheet"
     />
     <style>
-      /* Garante que o Chromium não adicione margens de impressão padrão */
-      /* 1. Força o tamanho físico da folha */
-      /* 1. Define o tamanho físico da folha A4 */
+      /* 1. Reset e definição da folha */
       @page {
         size: A4 landscape;
         margin: 0;
       }
 
-      /* 2. Reset total e dimensões em mm */
       body,
       html {
         margin: 0;
         padding: 0;
-        width: 297mm; /* Largura exata do A4 */
-        height: 210mm; /* Altura exata do A4 */
-        background-color: #05050a; /* Fundo galáctico cobrindo tudo */
+        width: 297mm;
+        height: 210mm;
+        background-color: #05050a; /* Fundo escuro */
         display: flex;
         align-items: center;
         justify-content: center;
         overflow: hidden;
+        /* Força a renderização de cores de fundo */
+        -webkit-print-color-adjust: exact;
       }
 
-      /* 3. Container do Certificado (o quadrado branco) */
+      /* 2. Container do Certificado com Safe-Zone */
       .cert-container {
-        /* Deixamos uma margem de segurança de 6mm em cada lado */
-        width: 285mm;
-        height: 198mm;
+        /* Reduzimos para 90% para garantir que a borda preta nunca seja cortada */
+        width: 90%;
+        height: 85%;
         background-color: rgba(255, 255, 255, 0.65);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
-        border: 8px solid #1a1a1a;
-        border-radius: 20px;
+        border: 6px solid #1a1a1a;
+        border-radius: 15px;
         position: relative;
         box-sizing: border-box;
-        padding: 40px; /* Espaço interno para o texto não bater na borda */
+        padding: 30px;
         display: flex;
-        /* Reduzimos a sombra, pois sombras grandes causam corte em PDF */
-        box-shadow: 0 5mm 15mm rgba(0, 0, 0, 0.4);
+        /* Removemos o box-shadow externo, pois ele causa o corte na direita/baixo */
+        box-shadow: none;
       }
 
       /* Fundo estilo Galáxia (Nebulosa) no EXTERIOR (body) */
