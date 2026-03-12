@@ -1,2 +1,5 @@
 node_modules/
-certificados-gerados/
+certificados-gerados/*
+!certificados-gerados/.gitkeep
+
+*.png
