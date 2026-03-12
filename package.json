@@ -3,8 +3,8 @@
   "version": "2.0.0",
   "description": "Gerador de certificados em PDF para o AWS Cloud Club — suporta participantes e organizadores",
   "scripts": {
-    "generate:participantes": "MODE=participante node scripts/index.js",
-    "generate:organizadores": "MODE=organizador node scripts/index.js",
+    "generate:participantes": "cross-env MODE=participante node scripts/index.js",
+    "generate:organizadores": "cross-env MODE=organizador node scripts/index.js",
     "generate:all": "npm run generate:participantes && npm run generate:organizadores"
   },
   "dependencies": {
@@ -13,5 +13,8 @@
     "nodemailer": "^8.0.1",
     "pdf-lib": "^1.17.1",
     "puppeteer": "^24.37.5"
+  },
+  "devDependencies": {
+    "cross-env": "^10.1.0"
   }
 }
