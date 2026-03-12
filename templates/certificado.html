@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-PT">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,20 +11,17 @@
       rel="stylesheet"
     />
     <style>
-      /* Reset universal */
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
 
-      /* Define o tamanho exato da página impressa */
       @page {
         size: 1300px 960px;
         margin: 0;
       }
 
-      /* html e body: dimensões fixas, sem margem, sem colapso */
       html {
         width: 1300px;
         height: 960px;
@@ -33,35 +30,12 @@
 
       body {
         margin: 0;
-        /* Padding no body (não margin no filho) evita o colapso de margem
-           que causava html.scrollHeight = 1080 e gerava 2 páginas no PDF */
         padding: 120px 125px;
         width: 1300px;
         height: 960px;
         box-sizing: border-box;
         background-color: #05050a;
         -webkit-print-color-adjust: exact;
-      }
-
-      /* Container Principal do Certificado — sem margin, o padding do body centraliza */
-      .cert-container {
-        position: relative;
-        width: 1050px;
-        height: 720px;
-        background-color: rgba(255, 255, 255, 0.65);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border: 8px solid #1a1a1a;
-        border-radius: 20px;
-        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
-        padding: 60px;
-        box-sizing: border-box;
-        display: flex;
-        overflow: hidden;
-      }
-
-      /* Fundo estilo Galáxia (Nebulosa) no EXTERIOR (body) */
-      body {
         background-image:
           radial-gradient(
             circle at 15% 40%,
@@ -80,7 +54,6 @@
           );
       }
 
-      /* Estrelas do fundo galáctico */
       body::before {
         content: "";
         position: fixed;
@@ -105,15 +78,26 @@
       }
 
       @keyframes starsMove {
-        from {
-          background-position: 0 0;
-        }
-        to {
-          background-position: -600px -600px;
-        }
+        from { background-position: 0 0; }
+        to   { background-position: -600px -600px; }
       }
 
-      /* Fita Decorativa (Ribbon) */
+      .cert-container {
+        position: relative;
+        width: 1050px;
+        height: 720px;
+        background-color: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 8px solid #1a1a1a;
+        border-radius: 20px;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+        padding: 60px;
+        box-sizing: border-box;
+        display: flex;
+        overflow: hidden;
+      }
+
       .ribbon-wrapper {
         position: absolute;
         top: 0;
@@ -128,35 +112,20 @@
         z-index: 1;
       }
 
-      .stripe {
-        height: 100%;
-      }
+      .stripe { height: 100%; }
 
       .stripe.purple {
         flex: 1;
-        /* Degradê nas listras roxas */
-        background: linear-gradient(
-          180deg,
-          #3b0764 0%,
-          #9333ea 50%,
-          #3b0764 100%
-        );
+        background: linear-gradient(180deg, #3b0764 0%, #9333ea 50%, #3b0764 100%);
       }
 
       .stripe.blue {
         flex: 1.2;
-        /* Degradê na listra azul */
-        background: linear-gradient(
-          180deg,
-          #1e3a8a 0%,
-          #3b82f6 50%,
-          #1e3a8a 100%
-        );
+        background: linear-gradient(180deg, #1e3a8a 0%, #3b82f6 50%, #1e3a8a 100%);
         border-left: 2px solid #1a1a1a;
         border-right: 2px solid #1a1a1a;
       }
 
-      /* Logo do Mascote (Sobrepondo a fita) */
       .cert-logo {
         position: absolute;
         top: 140px;
@@ -168,7 +137,6 @@
         filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.4));
       }
 
-      /* Bloco de Assinatura (Alinhado à direita debaixo da logo) */
       .signature-block {
         position: absolute;
         bottom: 60px;
@@ -178,7 +146,6 @@
         z-index: 3;
       }
 
-      /* Nova classe para a imagem da assinatura */
       .sig-image {
         max-width: 220px;
         max-height: 70px;
@@ -192,7 +159,7 @@
       .sig-line {
         width: 100%;
         height: 3px;
-        background-color: #1a1a1a; /* Linha preta */
+        background-color: #1a1a1a;
         margin-bottom: 12px;
         border: none;
       }
@@ -213,9 +180,8 @@
         margin: 0;
       }
 
-      /* Conteúdo do lado esquerdo (Textos) */
       .content-left {
-        width: 66%; /* Reduzido de 80% para 66% para não sobrepor a assinatura e o mascote na direita */
+        width: 66%;
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -231,9 +197,9 @@
         font-size: 75px;
         font-weight: 900;
         margin: 0;
-        color: #000000; /* Texto Preto */
+        color: #000000;
         letter-spacing: 2px;
-        text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.9); /* Brilho leve para destacar do fundo transparente */
+        text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.9);
       }
 
       .text-block {
@@ -249,7 +215,7 @@
         font-family: "Montserrat", sans-serif;
         font-size: 18px;
         font-weight: 700;
-        color: #1a1a1a; /* Texto Preto */
+        color: #1a1a1a;
         margin-bottom: 25px;
       }
 
@@ -257,7 +223,7 @@
         font-family: "Playfair Display", serif;
         font-size: 50px;
         font-weight: bold;
-        color: #000000; /* Texto Preto */
+        color: #000000;
         margin: 0 0 30px 0;
         letter-spacing: 1px;
         text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.8);
@@ -270,89 +236,69 @@
         line-height: 1.6;
         text-align: justify;
         text-align-last: center;
-        color: #1a1a1a; /* Texto Preto */
+        color: #1a1a1a;
         font-weight: 600;
-        max-width: 100%; /* Aproveita todo o espaço dos 66% */
+        max-width: 100%;
         margin: 0;
         text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
       }
 
-      .body-text strong {
-        color: #000000;
-        font-weight: 800;
-      }
+      .body-text strong { color: #000000; font-weight: 800; }
 
       .date {
         font-family: "Montserrat", sans-serif;
         font-size: 16px;
         font-weight: 700;
-        color: #1a1a1a; /* Texto Preto */
+        color: #1a1a1a;
         text-align: center;
         margin: 0;
-        margin-bottom: 10px; /* Margem normalizada, já não colide com as logos */
+        margin-bottom: 10px;
         text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
       }
     </style>
   </head>
   <body>
     <div class="cert-container">
-      <!-- Fita Decorativa (Ribbon) com Degradê -->
+
+      <!-- Fita Decorativa -->
       <div class="ribbon-wrapper">
         <div class="stripe purple"></div>
         <div class="stripe blue"></div>
         <div class="stripe purple"></div>
       </div>
 
-      <!-- Logo do Mascote (Centralizada sobre a fita) -->
+      <!-- Logo / Mascote -->
       <img
-        src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/logo-mascote.png"
+        src="{{ LOGO_URL }}"
         alt="Logo Mascote"
         class="cert-logo"
       />
 
-      <!-- Área de Assinatura -->
+      <!-- Assinatura -->
       <div class="signature-block">
-        <!-- Substitua o link do src pela imagem da sua assinatura com fundo transparente (.png) -->
         <img
-          src="https://aws-cloud-club-univali.s3.sa-east-1.amazonaws.com/imagens/assinatura-henrique.png"
+          src="{{ SIGNER_IMAGE }}"
           alt="Assinatura"
           class="sig-image"
         />
         <hr class="sig-line" />
-        <p class="sig-name">Henrique Zimermann</p>
-        <p class="sig-role">AWS Cloud Club Captain</p>
+        <p class="sig-name">{{ SIGNER_NAME }}</p>
+        <p class="sig-role">{{ SIGNER_ROLE }}</p>
       </div>
 
-      <!-- Área de Conteúdo da Esquerda (Textos) -->
+      <!-- Conteúdo principal -->
       <div class="content-left">
         <h1 class="cert-title">CERTIFICADO</h1>
 
         <div class="text-block">
           <p class="label">Certificamos que:</p>
-          <!-- VARIÁVEL DE NOME AQUI -->
           <h2 class="name">{{ NOME_PARTICIPANTE }}</h2>
-          <p class="body-text">
-            Participou com êxito do evento de lançamento
-            <strong
-              >1º Meetup AWS Cloud Club Univali: O Ecossistema AWS: Operação
-              Diária e Estratégia de Arquitetura</strong
-            >. O encontro proporcionou uma imersão na prática do dia a dia com a
-            visão estratégica de arquitetura na nuvem, contemplando as palestras
-            <em
-              >"Como eu utilizo AWS no meu dia a dia como Analista de Dados"</em
-            >
-            (por Diego Silva) e
-            <em
-              >"Decisões Arquiteturais: Projetando Soluções de Alto Valor na
-              AWS"</em
-            >
-            (por Regis Dias).
-          </p>
+          <p class="body-text">{{ CORPO_CERTIFICADO }}</p>
         </div>
 
-        <!-- VARIÁVEL DE DATA AQUI -->
-        <p class="date">Itajaí - SC, {{ DATA_EVENTO }}</p>
+        <p class="date">{{ LOCAL_EVENTO }}, {{ DATA_EVENTO }}</p>
       </div>
+
     </div>
   </body>
 </html>
