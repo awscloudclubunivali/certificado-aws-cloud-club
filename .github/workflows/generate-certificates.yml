@@ -1,17 +1,34 @@
 name: Gerar e Enviar Certificados
 
 on:
-  # Disparo manual: pode enviar ou apenas gerar os PDFs
+  # Disparo manual com controle de modo e envio de email
   workflow_dispatch:
     inputs:
-      enviar_emails:
-        description: "Enviar os certificados por email para os participantes?"
+      modo:
+        description: "Qual tipo de certificado gerar?"
         required: true
-        default: "true"
+        default: "ambos"
+        type: choice
+        options:
+          - participantes
+          - organizadores
+          - ambos
+      enviar_emails:
+        description: "Enviar os certificados por email?"
+        required: true
+        default: "false"
         type: choice
         options:
           - "true"
           - "false"
+
+  # Disparo automático ao atualizar os CSVs na branch main
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - "data/participantes.csv"
+  #     - "data/organizadores.csv"
 
 jobs:
   gerar-certificados:
@@ -48,22 +65,24 @@ jobs:
       - name: Instalar dependências Node.js
         run: npm install
 
-      - name: Gerar certificados em PDF
-        env:
-          # Variáveis SMTP lidas dos GitHub Secrets (somente necessárias se enviar_emails=true)
-          SMTP_HOST: ${{ secrets.SMTP_HOST }}
-          SMTP_PORT: ${{ secrets.SMTP_PORT }}
-          SMTP_USER: ${{ secrets.SMTP_USER }}
-          SMTP_PASS: ${{ secrets.SMTP_PASS }}
-          SMTP_FROM: ${{ secrets.SMTP_FROM }}
-          # Controle de envio de emails - usa o input do workflow ou false ao disparar por push
-          ENVIAR_EMAILS: ${{ github.event.inputs.enviar_emails || 'false' }}
+      - name: Definir variáveis SMTP (somente se enviar_emails=true)
+        id: smtp
         run: |
-          if [ "$ENVIAR_EMAILS" = "false" ]; then
-            # Limpa as variáveis SMTP para que o script pule o envio de email
-            unset SMTP_HOST SMTP_USER SMTP_PASS
+          if [ "${{ github.event.inputs.enviar_emails }}" = "true" ]; then
+            echo "SMTP_HOST=${{ secrets.SMTP_HOST }}"   >> $GITHUB_ENV
+            echo "SMTP_PORT=${{ secrets.SMTP_PORT }}"   >> $GITHUB_ENV
+            echo "SMTP_USER=${{ secrets.SMTP_USER }}"   >> $GITHUB_ENV
+            echo "SMTP_PASS=${{ secrets.SMTP_PASS }}"   >> $GITHUB_ENV
+            echo "SMTP_FROM=${{ secrets.SMTP_FROM }}"   >> $GITHUB_ENV
           fi
-          node scripts/generate-certificates.js
+
+      - name: Gerar certificados — Participantes
+        if: ${{ github.event.inputs.modo == 'participantes' || github.event.inputs.modo == 'ambos' || github.event_name == 'push' }}
+        run: MODE=participante node scripts/index.js
+
+      - name: Gerar certificados — Organizadores
+        if: ${{ github.event.inputs.modo == 'organizadores' || github.event.inputs.modo == 'ambos' || github.event_name == 'push' }}
+        run: MODE=organizador node scripts/index.js
 
       - name: Fazer upload dos certificados como artefato
         uses: actions/upload-artifact@v4
@@ -71,4 +90,4 @@ jobs:
           name: certificados-pdf
           path: certificados-gerados/
           retention-days: 30
-          if-no-files-found: error
+          if-no-files-found: warn
