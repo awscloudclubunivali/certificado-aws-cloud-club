@@ -87,10 +87,10 @@ async function main() {
   try {
     for (const pessoa of pessoas) {
       const nome = pessoa["NOME_PARTICIPANTE"]?.trim();
-      const data = pessoa["DATA_EVENTO"]?.trim();
+      const data = pessoa["DATA_EVENTO"]?.trim() || eventConfig.dataEvento;
       const email = pessoa["Email"]?.trim();
 
-      if (!nome || !data || !email) {
+      if (!nome || !email) {
         console.warn("⚠️  Linha ignorada por dados incompletos:", pessoa);
         continue;
       }
