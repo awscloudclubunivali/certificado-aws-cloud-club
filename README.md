@@ -38,7 +38,7 @@ certificado-cloud-club/
 │   └── event.js                        # ⚙️  Configuração do evento (edite aqui)
 ├── data/
 │   ├── participantes.csv               # 👥 Lista de participantes
-│   └── organizadores.csv               # 🛠️  Lista de organizadores
+│   └── organizadores.csv               # 🛠️ Lista de organizadores
 ├── templates/
 │   └── certificado.html                # 🎨 Template visual do certificado
 ├── scripts/
@@ -47,13 +47,13 @@ certificado-cloud-club/
 │   ├── mailer.js                       # 📧 Envio de email via Nodemailer
 │   └── csv.js                          # 📊 Leitura de CSV
 ├── certificados-gerados/
-│   ├── participantes/                  # PDFs gerados para participantes
-│   └── organizadores/                  # PDFs gerados para organizadores
+│   ├── participantes/                  # 📄 PDFs gerados para participantes
+│   └── organizadores/                  # 📄 PDFs gerados para organizadores
 ├── .github/
 │   └── workflows/
-│       └── generate-certificates.yml  # 🤖 Pipeline GitHub Actions
-├── .env.example                            # 📋 Variáveis de ambiente (referência)
-├── Makefile                                # 🛠️  Comandos simplificados
+│       └── generate-certificates.yml   # 🤖 Pipeline GitHub Actions
+├── .env.example                        # 📋 Variáveis de ambiente (referência)
+├── Makefile                            # 🛠️  Comandos simplificados
 └── package.json
 ```
 
