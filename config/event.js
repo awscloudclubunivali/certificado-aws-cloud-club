@@ -6,6 +6,9 @@ module.exports = {
   // Nome do evento
   nomeEvento: "1º Meetup AWS Cloud Club Univali",
 
+  // Data do evento exibida no rodapé do certificado
+  dataEvento: "25 de fevereiro de 2026",
+
   // Localização exibida no rodapé do certificado
   local: "Itajaí - SC",
 
