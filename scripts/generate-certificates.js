@@ -3,6 +3,7 @@ const path = require("path");
 const csv = require("csv-parser");
 const puppeteer = require("puppeteer");
 const nodemailer = require("nodemailer");
+const { PDFDocument } = require("pdf-lib");
 
 const ROOT_DIR = path.resolve(__dirname, "..");
 const TEMPLATE_PATH = path.join(ROOT_DIR, "index.html");
@@ -28,19 +29,24 @@ async function gerarPDF(htmlContent, outputPath) {
   try {
     const page = await browser.newPage();
 
-    await page.setViewport({ width: 1170, height: 840, deviceScaleFactor: 1 });
+    // Viewport igual à área visual do certificado
+    await page.setViewport({ width: 1300, height: 960, deviceScaleFactor: 1 });
+    await page.setContent(htmlContent, { waitUntil: "networkidle0" });
 
-    await page.setContent(htmlContent, {
-      waitUntil: "networkidle0",
+    // Captura screenshot PNG — este caminho já está comprovadamente correto
+    const pngBuffer = await page.screenshot({
+      type: "png",
+      clip: { x: 0, y: 0, width: 1300, height: 960 },
     });
 
-    await page.pdf({
-      path: outputPath,
-      width: "1170px",  // 1050px de conteúdo + 2x 60px padding
-      height: "840px",  // 720px de conteúdo + 2x 60px padding
-      printBackground: true,
-      margin: { top: "0", right: "0", bottom: "0", left: "0" },
-    });
+    // Embute a imagem PNG em um PDF de página única com as mesmas dimensões
+    const pdfDoc = await PDFDocument.create();
+    const pngImage = await pdfDoc.embedPng(pngBuffer);
+    const page_ = pdfDoc.addPage([1300, 960]);
+    page_.drawImage(pngImage, { x: 0, y: 0, width: 1300, height: 960 });
+
+    const pdfBytes = await pdfDoc.save();
+    fs.writeFileSync(outputPath, pdfBytes);
   } finally {
     await browser.close();
   }
@@ -121,7 +127,9 @@ async function main() {
       continue;
     }
 
-    const nomeArquivo = nome.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9_\-]/g, "");
+    const nomeArquivo = nome
+      .replace(/\s+/g, "_")
+      .replace(/[^a-zA-Z0-9_\-]/g, "");
     const pdfPath = path.join(OUTPUT_DIR, `Certificado_${nomeArquivo}.pdf`);
 
     console.log(`Gerando certificado para: ${nome}`);
@@ -129,7 +137,11 @@ async function main() {
     await gerarPDF(htmlContent, pdfPath);
     console.log(`  PDF gerado: ${pdfPath}`);
 
-    if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+    if (
+      process.env.SMTP_HOST &&
+      process.env.SMTP_USER &&
+      process.env.SMTP_PASS
+    ) {
       console.log(`  Enviando email para: ${email}`);
       try {
         await enviarEmail(email, nome, pdfPath);
@@ -139,7 +151,9 @@ async function main() {
         errosEmail.push({ nome, email, erro: err.message });
       }
     } else {
-      console.log(`  Envio de email ignorado: variáveis SMTP não configuradas.`);
+      console.log(
+        `  Envio de email ignorado: variáveis SMTP não configuradas.`,
+      );
     }
 
     console.log("");
