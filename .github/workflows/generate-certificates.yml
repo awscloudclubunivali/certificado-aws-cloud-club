@@ -23,12 +23,12 @@ on:
           - "false"
 
   # Disparo automático ao atualizar os CSVs na branch main
-  push:
-    branches:
-      - main
-    paths:
-      - "data/participantes.csv"
-      - "data/organizadores.csv"
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - "data/participantes.csv"
+  #     - "data/organizadores.csv"
 
 jobs:
   gerar-certificados:

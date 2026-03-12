@@ -1,5 +1,6 @@
 node_modules/
 certificados-gerados/*
 !certificados-gerados/.gitkeep
+.env
 
 *.png

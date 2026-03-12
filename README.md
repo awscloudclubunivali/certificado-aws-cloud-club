@@ -7,7 +7,6 @@ Geração automática de certificados em PDF a partir de CSVs e envio por email,
 [![Node.js](https://img.shields.io/badge/Node.js-20-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org)
 [![Puppeteer](https://img.shields.io/badge/Puppeteer-PDF-40B5A4?style=for-the-badge&logo=googlechrome&logoColor=white)](https://pptr.dev)
 [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI%2FCD-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)](https://github.com/features/actions)
-[![AWS](https://img.shields.io/badge/Amazon_AWS-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white)](https://aws.amazon.com)
 
 </div>
 
@@ -53,6 +52,8 @@ certificado-cloud-club/
 ├── .github/
 │   └── workflows/
 │       └── generate-certificates.yml  # 🤖 Pipeline GitHub Actions
+├── .env.example                            # 📋 Variáveis de ambiente (referência)
+├── Makefile                                # 🛠️  Comandos simplificados
 └── package.json
 ```
 
@@ -118,31 +119,40 @@ O `templates/certificado.html` suporta as seguintes variáveis substituídas aut
 
 ## Como executar localmente
 
+### 1. Configurar variáveis de ambiente
+
 ```bash
-# Instalar dependências
-npm install
+cp .env.example .env
+# Edite .env com suas credenciais SMTP (opcional — sem SMTP o envio é ignorado)
+```
 
-# Gerar certificados para participantes
+### 2. Instalar dependências
+
+```bash
+make install
+# ou: npm install
+```
+
+### 3. Gerar certificados
+
+```bash
+make participantes       # Somente participantes
+make organizadores       # Somente organizadores
+make all                 # Ambos
+
+# ou via npm:
 npm run generate:participantes
-
-# Gerar certificados para organizadores
 npm run generate:organizadores
-
-# Gerar ambos de uma vez
 npm run generate:all
 ```
 
 Os PDFs são salvos em `certificados-gerados/participantes/` e `certificados-gerados/organizadores/`.
 
-Para habilitar o envio de emails, exporte as variáveis SMTP antes de executar:
+### Outros comandos Makefile
 
 ```bash
-export SMTP_HOST=smtp.gmail.com
-export SMTP_PORT=587
-export SMTP_USER=seu@gmail.com
-export SMTP_PASS=sua-app-password
-
-npm run generate:participantes
+make help    # Lista todos os comandos disponíveis
+make clean   # Remove os PDFs gerados
 ```
 
 ---

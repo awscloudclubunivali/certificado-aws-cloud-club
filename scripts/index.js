@@ -1,6 +1,9 @@
 const fs = require("fs");
 const path = require("path");
 
+// Carrega variáveis do .env quando executado localmente
+require("dotenv").config({ path: path.resolve(__dirname, "../.env"), quiet: true });
+
 const { lerCSV } = require("./csv");
 const { gerarPDF } = require("./pdf");
 const { criarTransporte, enviarEmail } = require("./mailer");
@@ -20,7 +23,8 @@ if (!["participante", "organizador"].includes(MODE)) {
   process.exit(1);
 }
 
-const CSV_PATH = path.join(DATA_DIR, `${MODE}s.csv`);
+const CSV_FILENAME = MODE === "organizador" ? "organizadores.csv" : "participantes.csv";
+const CSV_PATH = path.join(DATA_DIR, CSV_FILENAME);
 
 /**
  * Preenche o template HTML com os dados da pessoa e as configurações do evento.
@@ -67,7 +71,7 @@ async function main() {
     return;
   }
 
-  const subdir = path.join(OUTPUT_DIR, `${MODE}s`);
+  const subdir = path.join(OUTPUT_DIR, MODE === "organizador" ? "organizadores" : "participantes");
   fs.mkdirSync(subdir, { recursive: true });
 
   const transporte = criarTransporte();
