@@ -5,7 +5,7 @@ const path = require("path");
 require("dotenv").config({ path: path.resolve(__dirname, "../.env"), quiet: true });
 
 const { lerCSV } = require("./csv");
-const { gerarPDF } = require("./pdf");
+const { criarBrowser, gerarPDF } = require("./pdf");
 const { criarTransporte, enviarEmail } = require("./mailer");
 const eventConfig = require("../config/event");
 
@@ -83,40 +83,45 @@ async function main() {
 
   const errosEmail = [];
 
-  for (const pessoa of pessoas) {
-    const nome = pessoa["NOME_PARTICIPANTE"]?.trim();
-    const data = pessoa["DATA_EVENTO"]?.trim();
-    const email = pessoa["Email"]?.trim();
+  const browser = await criarBrowser();
+  try {
+    for (const pessoa of pessoas) {
+      const nome = pessoa["NOME_PARTICIPANTE"]?.trim();
+      const data = pessoa["DATA_EVENTO"]?.trim();
+      const email = pessoa["Email"]?.trim();
 
-    if (!nome || !data || !email) {
-      console.warn("⚠️  Linha ignorada por dados incompletos:", pessoa);
-      continue;
-    }
-
-    const nomeArquivo = nome
-      .replace(/\s+/g, "_")
-      .replace(/[^a-zA-Z0-9_-]/g, "");
-    const pdfPath = path.join(subdir, `Certificado_${nomeArquivo}.pdf`);
-
-    console.log(`📄 Gerando: ${nome}`);
-    const html = prepararHTML(nome, data);
-    await gerarPDF(html, pdfPath);
-    console.log(`   ✅ Salvo em: ${path.relative(ROOT_DIR, pdfPath)}`);
-
-    if (enviarEmailAtivado) {
-      console.log(`   📧 Enviando para: ${email}`);
-      try {
-        await enviarEmail(transporte, email, nome, pdfPath, eventConfig);
-        console.log(`   ✅ Email enviado.`);
-      } catch (err) {
-        console.error(`   ❌ Falha ao enviar email: ${err.message}`);
-        errosEmail.push({ nome, email, erro: err.message });
+      if (!nome || !data || !email) {
+        console.warn("⚠️  Linha ignorada por dados incompletos:", pessoa);
+        continue;
       }
-    } else {
-      console.log(`   ⏭️  Email ignorado (SMTP não configurado).`);
-    }
 
-    console.log("");
+      const nomeArquivo = nome
+        .replace(/\s+/g, "_")
+        .replace(/[^a-zA-Z0-9_-]/g, "");
+      const pdfPath = path.join(subdir, `Certificado_${nomeArquivo}.pdf`);
+
+      console.log(`📄 Gerando: ${nome}`);
+      const html = prepararHTML(nome, data);
+      await gerarPDF(browser, html, pdfPath);
+      console.log(`   ✅ Salvo em: ${path.relative(ROOT_DIR, pdfPath)}`);
+
+      if (enviarEmailAtivado) {
+        console.log(`   📧 Enviando para: ${email}`);
+        try {
+          await enviarEmail(transporte, email, nome, pdfPath, eventConfig);
+          console.log(`   ✅ Email enviado.`);
+        } catch (err) {
+          console.error(`   ❌ Falha ao enviar email: ${err.message}`);
+          errosEmail.push({ nome, email, erro: err.message });
+        }
+      } else {
+        console.log(`   ⏭️  Email ignorado (SMTP não configurado).`);
+      }
+
+      console.log("");
+    }
+  } finally {
+    await browser.close();
   }
 
   if (errosEmail.length > 0) {
