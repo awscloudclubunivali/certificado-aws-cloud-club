@@ -3,6 +3,7 @@ const path = require("path");
 const csv = require("csv-parser");
 const puppeteer = require("puppeteer");
 const nodemailer = require("nodemailer");
+const { PDFDocument } = require("pdf-lib");
 
 const ROOT_DIR = path.resolve(__dirname, "..");
 const TEMPLATE_PATH = path.join(ROOT_DIR, "index.html");
@@ -28,22 +29,24 @@ async function gerarPDF(htmlContent, outputPath) {
   try {
     const page = await browser.newPage();
 
-    // Viewport simulando A4 em 96 DPI
-    await page.setViewport({ width: 1123, height: 794, deviceScaleFactor: 2 });
-
+    // Viewport igual à área visual do certificado
+    await page.setViewport({ width: 1300, height: 960, deviceScaleFactor: 1 });
     await page.setContent(htmlContent, { waitUntil: "networkidle0" });
 
-    await page.pdf({
-      path: outputPath,
-      format: "A4",
-      landscape: true,
-      printBackground: true,
-      preferCSSPageSize: true,
-      margin: { top: "0", right: "0", bottom: "0", left: "0" },
-      /* A "MÁGICA": 0.9 reduz o conteúdo em 10%, garantindo que a borda preta
-         e os textos de Itajaí apareçam perfeitamente centralizados. */
-      scale: 0.9,
+    // Captura screenshot PNG — este caminho já está comprovadamente correto
+    const pngBuffer = await page.screenshot({
+      type: "png",
+      clip: { x: 0, y: 0, width: 1300, height: 960 },
     });
+
+    // Embute a imagem PNG em um PDF de página única com as mesmas dimensões
+    const pdfDoc = await PDFDocument.create();
+    const pngImage = await pdfDoc.embedPng(pngBuffer);
+    const page_ = pdfDoc.addPage([1300, 960]);
+    page_.drawImage(pngImage, { x: 0, y: 0, width: 1300, height: 960 });
+
+    const pdfBytes = await pdfDoc.save();
+    fs.writeFileSync(outputPath, pdfBytes);
   } finally {
     await browser.close();
   }

@@ -11,44 +11,53 @@
       rel="stylesheet"
     />
     <style>
-      /* 1. Reset e definição da folha */
-      /* 1. Reset e definição da folha */
+      /* Reset universal */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Define o tamanho exato da página impressa */
       @page {
-        size: A4 landscape;
+        size: 1300px 960px;
         margin: 0;
       }
 
-      body,
+      /* html e body: dimensões fixas, sem margem, sem colapso */
       html {
-        margin: 0;
-        padding: 0;
-        width: 297mm;
-        height: 210mm;
-        background-color: #05050a; /* Fundo escuro */
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        width: 1300px;
+        height: 960px;
         overflow: hidden;
-        /* Força a renderização de cores de fundo */
+      }
+
+      body {
+        margin: 0;
+        /* Padding no body (não margin no filho) evita o colapso de margem
+           que causava html.scrollHeight = 1080 e gerava 2 páginas no PDF */
+        padding: 120px 125px;
+        width: 1300px;
+        height: 960px;
+        box-sizing: border-box;
+        background-color: #05050a;
         -webkit-print-color-adjust: exact;
       }
 
-      /* 2. Container do Certificado com Safe-Zone */
+      /* Container Principal do Certificado — sem margin, o padding do body centraliza */
       .cert-container {
-        /* Reduzimos para 90% para garantir que a borda preta nunca seja cortada */
-        width: 90%;
-        height: 85%;
+        position: relative;
+        width: 1050px;
+        height: 720px;
         background-color: rgba(255, 255, 255, 0.65);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
-        border: 6px solid #1a1a1a;
-        border-radius: 15px;
-        position: relative;
+        border: 8px solid #1a1a1a;
+        border-radius: 20px;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+        padding: 60px;
         box-sizing: border-box;
-        padding: 30px;
         display: flex;
-        /* Removemos o box-shadow externo, pois ele causa o corte na direita/baixo */
-        box-shadow: none;
+        overflow: hidden;
       }
 
       /* Fundo estilo Galáxia (Nebulosa) no EXTERIOR (body) */
@@ -108,10 +117,10 @@
       .ribbon-wrapper {
         position: absolute;
         top: 0;
-        right: 25mm;
+        right: 120px;
         display: flex;
-        height: 100mm;
-        width: 25mm;
+        height: 350px;
+        width: 100px;
         border-left: 2px solid #1a1a1a;
         border-right: 2px solid #1a1a1a;
         border-bottom: 2px solid #1a1a1a;
@@ -150,10 +159,10 @@
       /* Logo do Mascote (Sobrepondo a fita) */
       .cert-logo {
         position: absolute;
-        top: 53mm;
-        right: 10mm;
-        width: 55mm;
-        height: 55mm;
+        top: 140px;
+        right: 45px;
+        width: 250px;
+        height: 250px;
         z-index: 2;
         object-fit: contain;
         filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.4));
@@ -162,9 +171,9 @@
       /* Bloco de Assinatura (Alinhado à direita debaixo da logo) */
       .signature-block {
         position: absolute;
-        bottom: 15mm;
-        right: 10mm;
-        width: 60mm;
+        bottom: 60px;
+        right: 40px;
+        width: 260px;
         text-align: center;
         z-index: 3;
       }
