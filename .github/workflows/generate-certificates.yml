@@ -67,14 +67,19 @@ jobs:
 
       - name: Definir variáveis SMTP (somente se enviar_emails=true)
         id: smtp
+        if: ${{ github.event.inputs.enviar_emails == 'true' }}
+        env:
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SMTP_FROM: ${{ secrets.SMTP_FROM }}
         run: |
-          if [ "${{ github.event.inputs.enviar_emails }}" = "true" ]; then
-            echo "SMTP_HOST=${{ secrets.SMTP_HOST }}"   >> $GITHUB_ENV
-            echo "SMTP_PORT=${{ secrets.SMTP_PORT }}"   >> $GITHUB_ENV
-            echo "SMTP_USER=${{ secrets.SMTP_USER }}"   >> $GITHUB_ENV
-            echo "SMTP_PASS=${{ secrets.SMTP_PASS }}"   >> $GITHUB_ENV
-            echo "SMTP_FROM=${{ secrets.SMTP_FROM }}"   >> $GITHUB_ENV
-          fi
+          echo "SMTP_HOST=${SMTP_HOST}"   >> $GITHUB_ENV
+          echo "SMTP_PORT=${SMTP_PORT}"   >> $GITHUB_ENV
+          echo "SMTP_USER=${SMTP_USER}"   >> $GITHUB_ENV
+          echo "SMTP_PASS=${SMTP_PASS}"   >> $GITHUB_ENV
+          echo "SMTP_FROM=${SMTP_FROM}"   >> $GITHUB_ENV
 
       - name: Gerar certificados — Participantes
         if: ${{ github.event.inputs.modo == 'participantes' || github.event.inputs.modo == 'ambos' || github.event_name == 'push' }}
