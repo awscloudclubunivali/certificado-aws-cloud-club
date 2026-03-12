@@ -3,12 +3,11 @@ const puppeteer = require("puppeteer");
 const { PDFDocument } = require("pdf-lib");
 
 /**
- * Gera um PDF a partir de conteúdo HTML e salva no caminho indicado.
- * @param {string} htmlContent - HTML completo do certificado.
- * @param {string} outputPath  - Caminho de saída do arquivo PDF.
+ * Cria e retorna uma instância do browser Puppeteer configurada.
+ * @returns {Promise<import('puppeteer').Browser>}
  */
-async function gerarPDF(htmlContent, outputPath) {
-  const browser = await puppeteer.launch({
+async function criarBrowser() {
+  return puppeteer.launch({
     executablePath: puppeteer.executablePath(),
     args: [
       "--no-sandbox",
@@ -18,9 +17,18 @@ async function gerarPDF(htmlContent, outputPath) {
     ],
     timeout: 60000,
   });
+}
 
+/**
+ * Gera um PDF a partir de conteúdo HTML e salva no caminho indicado.
+ * @param {import('puppeteer').Browser} browser - Instância do browser Puppeteer.
+ * @param {string} htmlContent - HTML completo do certificado.
+ * @param {string} outputPath  - Caminho de saída do arquivo PDF.
+ */
+async function gerarPDF(browser, htmlContent, outputPath) {
+  let page;
   try {
-    const page = await browser.newPage();
+    page = await browser.newPage();
     await page.setViewport({ width: 1300, height: 960, deviceScaleFactor: 1 });
     await page.setContent(htmlContent, { waitUntil: "networkidle0" });
 
@@ -37,8 +45,8 @@ async function gerarPDF(htmlContent, outputPath) {
     const pdfBytes = await pdfDoc.save();
     fs.writeFileSync(outputPath, pdfBytes);
   } finally {
-    await browser.close();
+    if (page) await page.close();
   }
 }
 
-module.exports = { gerarPDF };
+module.exports = { criarBrowser, gerarPDF };
