@@ -4,17 +4,17 @@
  */
 module.exports = {
   // Nome do evento
-  nomeEvento: "1º Meetup AWS Cloud Club Univali",
+  nomeEvento: "2º Meetup AWS Cloud Club Univali",
 
   // Data do evento exibida no rodapé do certificado
-  dataEvento: "25 de fevereiro de 2026",
+  dataEvento: "29 de abril de 2026",
 
   // Localização exibida no rodapé do certificado
   local: "Itajaí - SC",
 
   // Configurações de email
   email: {
-    assunto: "Seu Certificado - 1º Meetup AWS Cloud Club Univali",
+    assunto: "Seu Certificado - 2º Meetup AWS Cloud Club Univali",
     nomeRemetente: "AWS Cloud Club Univali",
   },
 
@@ -37,8 +37,8 @@ module.exports = {
    * Disponível para cada modo: "participante" e "organizador".
    */
   corpoTexto: {
-    participante: `Participou com êxito do evento de lançamento <strong>1º Meetup AWS Cloud Club Univali: O Ecossistema AWS: Operação Diária e Estratégia de Arquitetura</strong>. O encontro de duração de <strong>2 horas</strong> proporcionou uma imersão na prática do dia a dia com a visão estratégica de arquitetura na nuvem, contemplando as palestras <em>"Como eu utilizo AWS no meu dia a dia como Analista de Dados"</em> (por Diego Silva) e <em>"Decisões Arquiteturais: Projetando Soluções de Alto Valor na AWS"</em> (por Regis Dias).`,
+    participante: `Participou com êxito do <strong>2º Meetup AWS Cloud Club Univali: O Futuro do Desenvolvimento com IA e Fundamentos da Nuvem</strong>. O encontro de duração de <strong>2 horas</strong> proporcionou uma imersão nos fundamentos da computação em nuvem e nos desafios reais do desenvolvimento de software com inteligência artificial, contemplando as palestras <em>"Proibido vibe codar: Desenvolvimento assistido por IA"</em> (por Alex Rese e Renato Costa) e <em>"AWS: Serviços Essenciais"</em> (por Fabricio Bortoluzzi).`,
 
-    organizador: `Participou como <strong>Membro da Organização Voluntário(a)</strong> na realização do evento de lançamento <strong>1º Meetup AWS Cloud Club Univali: O Ecossistema AWS: Operação Diária e Estratégia de Arquitetura</strong>. O encontro e as atividades de organização totalizaram uma carga horária de <strong>6 horas</strong>, sendo a sua dedicação fundamental para viabilizar as palestras <em>"Como eu utilizo AWS no meu dia a dia como Analista de Dados"</em> e <em>"Decisões Arquiteturais: Projetando Soluções de Alto Valor na AWS"</em>.`,
+    organizador: `Participou como <strong>Membro da Organização Voluntário(a)</strong> na realização do <strong>2º Meetup AWS Cloud Club Univali: O Futuro do Desenvolvimento com IA e Fundamentos da Nuvem</strong>. O encontro e as atividades de organização totalizaram uma carga horária de <strong>6 horas</strong>, sendo a sua dedicação fundamental para viabilizar as palestras <em>"Proibido vibe codar: Desenvolvimento assistido por IA"</em> e <em>"AWS: Serviços Essenciais"</em>.`,
   },
 };
