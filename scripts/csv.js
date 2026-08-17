@@ -9,7 +9,10 @@ const csv = require("csv-parser");
 function lerCSV(csvPath) {
   return new Promise((resolve, reject) => {
     const rows = [];
+    // .pipe() não propaga o evento "error" da stream de origem para a de destino —
+    // por isso o erro (ex.: arquivo inexistente) precisa ser escutado no readStream também.
     fs.createReadStream(csvPath)
+      .on("error", reject)
       .pipe(csv())
       .on("data", (row) => rows.push(row))
       .on("end", () => resolve(rows))
