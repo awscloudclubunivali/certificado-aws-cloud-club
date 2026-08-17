@@ -4,3 +4,8 @@ certificados-gerados/*
 .env
 
 *.png
+
+# Dados reais de participantes/organizadores (contêm PII) — nunca commitar.
+# Use os arquivos .example.csv como modelo.
+data/participantes.csv
+data/organizadores.csv

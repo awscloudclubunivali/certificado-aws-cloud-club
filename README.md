@@ -7,6 +7,7 @@ Geração automática de certificados em PDF a partir de CSVs e envio por email,
 [![Node.js](https://img.shields.io/badge/Node.js-20-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org)
 [![Puppeteer](https://img.shields.io/badge/Puppeteer-PDF-40B5A4?style=for-the-badge&logo=googlechrome&logoColor=white)](https://pptr.dev)
 [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI%2FCD-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)](https://github.com/features/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
 </div>
 
@@ -37,8 +38,8 @@ certificado-cloud-club/
 ├── config/
 │   └── event.js                        # ⚙️  Configuração do evento (edite aqui)
 ├── data/
-│   ├── participantes.csv               # 👥 Lista de participantes
-│   └── organizadores.csv               # 🛠️ Lista de organizadores
+│   ├── participantes.example.csv       # 👥 Modelo — copie para participantes.csv
+│   └── organizadores.example.csv       # 🛠️ Modelo — copie para organizadores.csv
 ├── templates/
 │   └── certificado.html                # 🎨 Template visual do certificado
 ├── scripts/
@@ -90,13 +91,22 @@ Depois, atualize os CSVs em `data/` e execute.
 
 ## Formato dos CSVs
 
-Ambos os arquivos seguem o mesmo formato com três colunas obrigatórias:
+Os arquivos `data/participantes.csv` e `data/organizadores.csv` **não são versionados** (contêm dados pessoais — nome e email — e vão para o `.gitignore`). Use os arquivos de exemplo como ponto de partida:
+
+```bash
+cp data/participantes.example.csv data/participantes.csv
+cp data/organizadores.example.csv data/organizadores.csv
+```
+
+Formato (a coluna `DATA_EVENTO` é opcional — se ausente, usa `config/event.js` → `dataEvento`):
 
 ```csv
 NOME_PARTICIPANTE,DATA_EVENTO,Email
 João Silva,10 de março de 2026,joao@email.com
 Maria Santos,10 de março de 2026,maria@email.com
 ```
+
+> ⚠️ **Nunca commite CSVs com dados reais de participantes.** Eles contêm informação pessoal (nome + email) e não devem ir para um repositório público. Se isso acontecer, os dados precisam ser removidos do histórico do git (não basta apagar no HEAD).
 
 ---
 
@@ -133,7 +143,15 @@ make install
 # ou: npm install
 ```
 
-### 3. Gerar certificados
+### 3. Configurar os dados (participantes/organizadores)
+
+```bash
+cp data/participantes.example.csv data/participantes.csv
+cp data/organizadores.example.csv data/organizadores.csv
+# Edite os CSVs com os dados reais do seu evento — eles não são versionados.
+```
+
+### 4. Gerar certificados
 
 ```bash
 make participantes       # Somente participantes
@@ -196,6 +214,16 @@ Acesse **Settings → Secrets and variables → Actions** e adicione:
 | [Nodemailer](https://nodemailer.com) | Envio de emails com anexo |
 | [csv-parser](https://www.npmjs.com/package/csv-parser) | Leitura dos arquivos CSV |
 | [GitHub Actions](https://github.com/features/actions) | Pipeline CI/CD de geração e envio |
+
+---
+
+## Contribuindo
+
+Contribuições são bem-vindas! Veja o [CONTRIBUTING.md](CONTRIBUTING.md) para o guia de como propor mudanças, e o [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) para as regras de convivência da comunidade.
+
+## Licença
+
+Distribuído sob a licença [MIT](LICENSE).
 
 ---
 

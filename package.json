@@ -2,6 +2,14 @@
   "name": "certificado-cloud-club",
   "version": "2.0.0",
   "description": "Gerador de certificados em PDF para o AWS Cloud Club — suporta participantes e organizadores",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/awscloudclubunivali/certificado-aws-cloud-club.git"
+  },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "generate:participantes": "cross-env MODE=participante node scripts/index.js",
     "generate:organizadores": "cross-env MODE=organizador node scripts/index.js",
